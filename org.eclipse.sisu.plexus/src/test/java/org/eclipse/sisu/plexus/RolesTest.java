@@ -15,6 +15,7 @@ import java.util.Map;
 
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.Key;
 import com.google.inject.ProvisionException;
@@ -22,10 +23,11 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 import com.google.inject.util.Types;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class RolesTest
-    extends TestCase
 {
     private static final TypeLiteral<Object> OBJECT_LITERAL = TypeLiteral.get( Object.class );
 
@@ -37,6 +39,7 @@ public class RolesTest
 
     private static final Key<Object> OBJECT_FOO_COMPONENT_KEY = Key.get( Object.class, Names.named( "foo" ) );
 
+    @Test
     public void testCanonicalRoleHint()
     {
         assertEquals( OBJECT_LITERAL + "", Roles.canonicalRoleHint( Object.class.getName(), null ) );
@@ -48,6 +51,7 @@ public class RolesTest
         assertEquals( OBJECT_LITERAL + ":foo", Roles.canonicalRoleHint( component( "foo" ) ) );
     }
 
+    @Test
     public void testDefaultComponentKeys()
     {
         assertEquals( OBJECT_COMPONENT_KEY, Roles.componentKey( Object.class, null ) );
@@ -57,12 +61,14 @@ public class RolesTest
         assertEquals( OBJECT_COMPONENT_KEY, Roles.componentKey( component( "default" ) ) );
     }
 
+    @Test
     public void testComponentKeys()
     {
         assertEquals( OBJECT_FOO_COMPONENT_KEY, Roles.componentKey( Object.class, "foo" ) );
         assertEquals( OBJECT_FOO_COMPONENT_KEY, Roles.componentKey( component( "foo" ) ) );
     }
 
+    @Test
     public void testRoleAnalysis()
     {
         assertEquals( STRING_LITERAL, Roles.roleType( requirement( String.class ), OBJECT_LITERAL ) );
@@ -94,6 +100,7 @@ public class RolesTest
         return new RequirementImpl( role, false );
     }
 
+    @Test
     public void testMissingComponentExceptions()
     {
         try
@@ -115,6 +122,7 @@ public class RolesTest
         }
     }
 
+    @Test
     public void testCamelization()
     {
         assertSame( "thisIsATest", Roles.camelizeName( "thisIsATest" ) );

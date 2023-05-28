@@ -20,11 +20,10 @@ import org.codehaus.plexus.component.repository.exception.ComponentLifecycleExce
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.context.Context;
 import org.codehaus.plexus.context.DefaultContext;
-
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 public abstract class PlexusTestCase
-    extends TestCase
 {
     // ----------------------------------------------------------------------
     // Constants
@@ -124,7 +123,7 @@ public abstract class PlexusTestCase
         // place-holder for tests to customize
     }
 
-    @Override
+    @BeforeEach
     protected void setUp()
         throws Exception
     {
@@ -164,7 +163,7 @@ public abstract class PlexusTestCase
         }
     }
 
-    @Override
+    @AfterEach
     protected void tearDown()
         throws Exception
     {

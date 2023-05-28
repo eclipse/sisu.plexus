@@ -18,6 +18,10 @@ import java.util.Date;
 import javax.inject.Inject;
 
 import com.google.inject.AbstractModule;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import com.google.inject.ConfigurationException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -25,12 +29,12 @@ import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class BeanConstantTest
-    extends TestCase
 {
-    @Override
+    @BeforeEach
     protected void setUp()
         throws Exception
     {
@@ -113,16 +117,19 @@ public class BeanConstantTest
     @Inject
     Injector injector;
 
+    @Test
     public void testEmptyBeanConversion()
     {
         assertEquals( EmptyBean.class, getBean( "EmptyBean", Object.class ).getClass() );
     }
 
+    @Test
     public void testMissingType()
     {
         testFailedConversion( "MissingType", EmptyBean.class );
     }
 
+    @Test
     public void testPeerClassLoader1()
     {
         final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
@@ -137,6 +144,7 @@ public class BeanConstantTest
         }
     }
 
+    @Test
     public void testPeerClassLoader2()
     {
         final ClassLoader tccl = Thread.currentThread().getContextClassLoader();
@@ -151,6 +159,7 @@ public class BeanConstantTest
         }
     }
 
+    @Test
     public void testBeanWithPropertiesConversion()
     {
         final BeanWithProperties beanWithProperties = (BeanWithProperties) getBean( "BeanWithProperty", Object.class );
@@ -158,48 +167,57 @@ public class BeanConstantTest
         assertEquals( beanWithProperties.text.length(), 0 );
     }
 
+    @Test
     public void testMissingPropertyConversion()
     {
         testFailedConversion( "MissingProperty", Object.class );
     }
 
+    @Test
     public void testStringXMLConversion()
     {
         final PlexusBeanConverter configurator = injector.getInstance( PlexusBeanConverter.class );
         assertEquals( configurator.convert( TypeLiteral.get( String.class ), "<one><two/></one>" ).length(), 0 );
     }
 
+    @Test
     public void testMissingDefaultConstructor()
     {
         testFailedConversion( "MissingDefaultConstructor", Object.class );
     }
 
+    @Test
     public void testBrokenDefaultConstructor()
     {
         testFailedConversion( "BrokenDefaultConstructor", Object.class );
     }
 
+    @Test
     public void testMissingStringConstructor()
     {
         testFailedConversion( "MissingStringConstructor", Object.class );
     }
 
+    @Test
     public void testBrokenStringConstructor()
     {
         testFailedConversion( "BrokenStringConstructor", Object.class );
     }
 
+    @Test
     public void testSimpleFileBean()
     {
         assertEquals( "readme.txt", injector.getInstance( Key.get( File.class, Names.named( "README" ) ) ).getName() );
     }
 
+    @Test
     public void testSimpleUrlBean()
     {
         assertEquals( "www.sonatype.org",
                       injector.getInstance( Key.get( URL.class, Names.named( "SITE" ) ) ).getHost() );
     }
 
+    @Test
     public void testNonBean()
     {
         final Calendar calendar = Calendar.getInstance();
@@ -210,6 +228,7 @@ public class BeanConstantTest
     }
 
     @SuppressWarnings( "boxing" )
+    @Test
     public void testConfigurator()
     {
         final PlexusBeanConverter configurator = injector.getInstance( PlexusBeanConverter.class );

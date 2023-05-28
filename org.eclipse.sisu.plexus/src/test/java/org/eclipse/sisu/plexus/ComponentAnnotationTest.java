@@ -14,11 +14,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import org.codehaus.plexus.component.annotations.Component;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ComponentAnnotationTest
-    extends TestCase
 {
     interface A
     {
@@ -71,6 +73,7 @@ public class ComponentAnnotationTest
     {
     }
 
+    @Test
     public void testComponentImpl()
         throws ClassNotFoundException
     {
@@ -80,12 +83,12 @@ public class ComponentAnnotationTest
         checkBehaviour( "NamedPrototypeA" );
         checkBehaviour( "DescribedA" );
 
-        assertFalse( replicate( getComponent( "DefaultA" ) ).equals( getComponent( "NamedA" ) ) );
-        assertFalse( replicate( getComponent( "DefaultA" ) ).equals( getComponent( "PrototypeA" ) ) );
-        assertFalse( replicate( getComponent( "DefaultA" ) ).equals( getComponent( "DescribedA" ) ) );
-        assertFalse( replicate( getComponent( "Simple" ) ).equals( getComponent( "DefaultA" ) ) );
-        assertFalse( replicate( getComponent( "Simple" ) ).equals( getComponent( "Simple2" ) ) );
-        assertFalse( replicate( getComponent( "Simple" ) ).equals( getComponent( "Simple3" ) ) );
+        assertNotEquals( replicate( getComponent( "DefaultA" ) ), getComponent( "NamedA" ) );
+        assertNotEquals( replicate( getComponent( "DefaultA" ) ), getComponent( "PrototypeA" ) );
+        assertNotEquals( replicate( getComponent( "DefaultA" ) ), getComponent( "DescribedA" ) );
+        assertNotEquals( replicate( getComponent( "Simple" ) ), getComponent( "DefaultA" ) );
+        assertNotEquals( replicate( getComponent( "Simple" ) ), getComponent( "Simple2" ) );
+        assertNotEquals( replicate( getComponent( "Simple" ) ), getComponent( "Simple3" ) );
     }
 
     private static void checkBehaviour( final String name )
@@ -94,10 +97,10 @@ public class ComponentAnnotationTest
         final Component orig = getComponent( name );
         final Component clone = replicate( orig );
 
-        assertTrue( orig.equals( clone ) );
-        assertTrue( clone.equals( orig ) );
-        assertTrue( clone.equals( clone ) );
-        assertFalse( clone.equals( "" ) );
+        assertEquals( orig, clone );
+        assertEquals( clone, orig );
+        assertEquals( clone, clone );
+        assertNotEquals( "", clone );
 
         assertEquals( orig.hashCode(), clone.hashCode() );
 
@@ -123,6 +126,7 @@ public class ComponentAnnotationTest
         return new ComponentImpl( orig.role(), orig.hint(), orig.instantiationStrategy(), orig.description() );
     }
 
+    @Test
     public void testNullChecks()
     {
         checkNullNotAllowed( null, "", "", "" );

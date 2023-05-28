@@ -14,30 +14,31 @@ import java.io.File;
 
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RealmDisposalTest
-    extends TestCase
 {
     private ClassLoader origCL;
 
-    @Override
+    @BeforeEach
     protected void setUp()
         throws Exception
     {
-        super.setUp();
         origCL = Thread.currentThread().getContextClassLoader();
     }
 
-    @Override
+    @AfterEach
     protected void tearDown()
         throws Exception
     {
         Thread.currentThread().setContextClassLoader( origCL );
-        super.tearDown();
     }
 
+    @Test
     public void test441254_recreateChildRealm()
         throws Exception
     {

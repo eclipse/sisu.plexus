@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.sisu.plexus;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,19 +22,21 @@ import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.ProvisionException;
 
-import junit.framework.TestCase;
-
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class PlexusConfigurationTest
-    extends TestCase
 {
     @Inject
     ConfiguredComponent component;
@@ -76,7 +76,7 @@ public class PlexusConfigurationTest
         }
     }
 
-    @Override
+    @BeforeEach
     protected void setUp()
     {
         Guice.createInjector( new AbstractModule()
@@ -148,6 +148,7 @@ public class PlexusConfigurationTest
         Xpp3Dom xml;
     }
 
+    @Test
     public void testConfiguration()
     {
         assertEquals( "1", component.a );

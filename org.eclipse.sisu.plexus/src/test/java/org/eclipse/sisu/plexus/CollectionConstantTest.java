@@ -22,15 +22,20 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.google.inject.AbstractModule;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import com.google.inject.Guice;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CollectionConstantTest
-    extends TestCase
 {
-    @Override
+    @BeforeEach
     protected void setUp()
         throws Exception
     {
@@ -76,11 +81,13 @@ public class CollectionConstantTest
     @Named( "Numbers" )
     Collection<Collection<Integer>> numbers;
 
+    @Test
     public void testEmptyCollection()
     {
         assertTrue( empty.isEmpty() );
     }
 
+    @Test
     public void testCustomCollections()
     {
         assertEquals( LinkedHashSet.class, custom.getClass() );
@@ -90,12 +97,14 @@ public class CollectionConstantTest
         assertFalse( i.hasNext() );
     }
 
+    @Test
     public void testStringCollection()
     {
         assertEquals( Arrays.asList( "cat", "dog", "aardvark" ), animals );
     }
 
     @SuppressWarnings( { "unchecked", "boxing" } )
+    @Test
     public void testPrimitiveCollection()
     {
         assertEquals( Arrays.asList( Arrays.asList( 1, 2 ), Arrays.asList( 3, 4 ), Arrays.asList( 5, 6 ) ), numbers );

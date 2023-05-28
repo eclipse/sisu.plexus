@@ -18,13 +18,13 @@ import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
 import org.codehaus.plexus.personality.plexus.lifecycle.phase.Startable;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PlexusLifecycleTest
-    extends TestCase
 {
     static class PlexusBean
         implements Startable
@@ -71,6 +71,7 @@ public class PlexusLifecycleTest
         }
     }
 
+    @Test
     public void testPlexusLifecycle()
         throws Exception
     {
@@ -89,6 +90,7 @@ public class PlexusLifecycleTest
         assertEquals( "<>", bean.toString() );
     }
 
+    @Test
     public void testJsr250Lifecycle()
         throws Exception
     {

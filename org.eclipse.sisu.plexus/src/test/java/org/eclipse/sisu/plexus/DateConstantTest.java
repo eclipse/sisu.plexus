@@ -18,18 +18,22 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.google.inject.AbstractModule;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import com.google.inject.ConfigurationException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class DateConstantTest
-    extends TestCase
 {
-    @Override
+    @BeforeEach
     protected void setUp()
         throws Exception
     {
@@ -71,16 +75,19 @@ public class DateConstantTest
     @Inject
     Injector injector;
 
+    @Test
     public void testDateFormat1()
     {
         assertEquals( dateText1, new SimpleDateFormat( "yyyy-MM-dd h:mm:ss.S a", Locale.US ).format( date1 ) );
     }
 
+    @Test
     public void testDateFormat2()
     {
         assertEquals( dateText2, new SimpleDateFormat( "yyyy-MM-dd h:mm:ssa", Locale.US ).format( date2 ) );
     }
 
+    @Test
     public void testBadDateFormat()
     {
         try

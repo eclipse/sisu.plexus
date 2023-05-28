@@ -17,11 +17,13 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class RequirementAnnotationTest
-    extends TestCase
 {
     @Requirement
     String defaultReq;
@@ -44,6 +46,7 @@ public class RequirementAnnotationTest
     @Requirement( role = String.class, hints = { "A", "B", "C" } )
     List<String> namedStringListReq;
 
+    @Test
     public void testRequirementImpl()
         throws NoSuchFieldException
     {
@@ -55,10 +58,10 @@ public class RequirementAnnotationTest
         checkBehaviour( "namedStringReq" );
         checkBehaviour( "namedStringListReq" );
 
-        assertFalse( replicate( getRequirement( "defaultReq" ) ).equals( getRequirement( "stringReq" ) ) );
-        assertFalse( replicate( getRequirement( "stringReq" ) ).equals( getRequirement( "namedStringReq" ) ) );
-        assertFalse( replicate( getRequirement( "defaultReq" ) ).equals( getRequirement( "namedListReq" ) ) );
-        assertFalse( replicate( getRequirement( "defaultReq" ) ).equals( getRequirement( "optionalReq" ) ) );
+        assertNotEquals( replicate( getRequirement( "defaultReq" ) ), getRequirement( "stringReq" ) );
+        assertNotEquals( replicate( getRequirement( "stringReq" ) ), getRequirement( "namedStringReq" ) );
+        assertNotEquals( replicate( getRequirement( "defaultReq" ) ), getRequirement( "namedListReq" ) );
+        assertNotEquals( replicate( getRequirement( "defaultReq" ) ), getRequirement( "optionalReq" ) );
     }
 
     private static void checkBehaviour( final String name )
@@ -67,10 +70,10 @@ public class RequirementAnnotationTest
         final Requirement orig = getRequirement( name );
         final Requirement clone = replicate( orig );
 
-        assertTrue( orig.equals( clone ) );
-        assertTrue( clone.equals( orig ) );
-        assertTrue( clone.equals( clone ) );
-        assertFalse( clone.equals( "" ) );
+        assertEquals( orig, clone );
+        assertEquals( clone, orig );
+        assertEquals( clone, clone );
+        assertNotEquals( "", clone );
 
         assertEquals( orig.hashCode(), clone.hashCode() );
 

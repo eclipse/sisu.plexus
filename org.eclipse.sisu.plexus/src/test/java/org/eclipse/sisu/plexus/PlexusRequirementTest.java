@@ -28,6 +28,9 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.ClassSpace;
 import org.eclipse.sisu.space.URLClassSpace;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
@@ -38,10 +41,13 @@ import com.google.inject.ProvisionException;
 import com.google.inject.Scopes;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class PlexusRequirementTest
-    extends TestCase
 {
     @Inject
     Component1 component;
@@ -49,7 +55,7 @@ public class PlexusRequirementTest
     @Inject
     Injector injector;
 
-    @Override
+    @BeforeEach
     protected void setUp()
     {
         Guice.createInjector( new AbstractModule()
@@ -58,7 +64,7 @@ public class PlexusRequirementTest
             @SuppressWarnings( "unchecked" )
             protected void configure()
             {
-                final ClassSpace space = new URLClassSpace( TestCase.class.getClassLoader() );
+                final ClassSpace space = new URLClassSpace( Assertions.class.getClassLoader() );
 
                 final DeferredClass<A> deferA = (DeferredClass<A>) space.deferLoadClass( BrokenAImpl.class.getName() );
 
@@ -273,6 +279,7 @@ public class PlexusRequirementTest
         B testNoDefault;
     }
 
+    @Test
     public void testRepeatInjection()
     {
         final Component1 duplicate = injector.getInstance( Component1.class );
@@ -281,6 +288,7 @@ public class PlexusRequirementTest
         assertSame( component.testRole, duplicate.testRole );
     }
 
+    @Test
     public void testSingleRequirement()
     {
         assertEquals( AImpl.class, component.testField.getClass() );
@@ -291,6 +299,7 @@ public class PlexusRequirementTest
         assertEquals( BImpl.class, component.testWildcard.getClass() );
     }
 
+    @Test
     public void testRequirementMap()
     {
         assertEquals( 5, component.testMap.size() );
@@ -328,6 +337,7 @@ public class PlexusRequirementTest
         assertFalse( values.hasNext() );
     }
 
+    @Test
     public void testRequirementSubMap()
     {
         assertEquals( 2, component.testSubMap.size() );
@@ -349,6 +359,7 @@ public class PlexusRequirementTest
         assertFalse( values.hasNext() );
     }
 
+    @Test
     public void testRequirementList()
     {
         assertEquals( 5, component.testList.size() );
@@ -371,6 +382,7 @@ public class PlexusRequirementTest
         assertFalse( i.hasNext() );
     }
 
+    @Test
     public void testRequirementSubList()
     {
         assertEquals( 2, component.testSubList.size() );
@@ -382,6 +394,7 @@ public class PlexusRequirementTest
         assertFalse( i.hasNext() );
     }
 
+    @Test
     public void testRequirementCollection()
     {
         assertEquals( 5, component.testCollection.size() );
@@ -403,6 +416,7 @@ public class PlexusRequirementTest
         assertFalse( i.hasNext() );
     }
 
+    @Test
     public void testRequirementIterable()
     {
         // check ordering is same as original map-binder
@@ -422,6 +436,7 @@ public class PlexusRequirementTest
         assertFalse( i.hasNext() );
     }
 
+    @Test
     public void testRequirementSet()
     {
         assertEquals( 5, component.testSet.size() );
@@ -443,16 +458,19 @@ public class PlexusRequirementTest
         assertFalse( i.hasNext() );
     }
 
+    @Test
     public void testZeroArgSetterError()
     {
         injector.getInstance( Component2.class );
     }
 
+    @Test
     public void testMultiArgSetterError()
     {
         injector.getInstance( Component3.class );
     }
 
+    @Test
     public void testMissingRequirement()
     {
         try
@@ -465,6 +483,7 @@ public class PlexusRequirementTest
         }
     }
 
+    @Test
     public void testNoSuchHint()
     {
         try
@@ -477,6 +496,7 @@ public class PlexusRequirementTest
         }
     }
 
+    @Test
     public void testNoSuchMapHint()
     {
         try
@@ -489,6 +509,7 @@ public class PlexusRequirementTest
         }
     }
 
+    @Test
     public void testNoSuchListHint()
     {
         try
@@ -501,6 +522,7 @@ public class PlexusRequirementTest
         }
     }
 
+    @Test
     public void testWildcardHint()
     {
         final List<A> testList = injector.getInstance( Component8.class ).testWildcardHint;
@@ -524,6 +546,7 @@ public class PlexusRequirementTest
         assertFalse( i.hasNext() );
     }
 
+    @Test
     public void testNoDefault()
     {
         try
@@ -570,6 +593,7 @@ public class PlexusRequirementTest
     @Inject
     Omega omega;
 
+    @Test
     public void testCircularity()
     {
         assertNotNull( ( (OmegaImpl) omega ).alpha );
@@ -579,6 +603,7 @@ public class PlexusRequirementTest
         assertSame( omega, ( (AlphaImpl) alpha ).omega );
     }
 
+    @Test
     public void testBadDeferredRole()
     {
         try
@@ -591,6 +616,7 @@ public class PlexusRequirementTest
         }
     }
 
+    @Test
     public void testPlexus121Compatibility()
         throws Exception
     {
@@ -618,6 +644,6 @@ public class PlexusRequirementTest
     @SuppressWarnings( "unchecked" )
     static <S, T extends S> DeferredClass<T> defer( final Class<S> clazz )
     {
-        return (DeferredClass<T>) new URLClassSpace( TestCase.class.getClassLoader() ).deferLoadClass( clazz.getName() );
+        return (DeferredClass<T>) new URLClassSpace( Assertions.class.getClassLoader() ).deferLoadClass( clazz.getName() );
     }
 }

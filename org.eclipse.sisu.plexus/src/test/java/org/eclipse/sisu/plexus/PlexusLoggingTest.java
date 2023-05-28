@@ -17,16 +17,18 @@ import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanManager;
 import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PlexusLoggingTest
-    extends TestCase
 {
     static class LoggerManager
         implements BeanManager
@@ -69,7 +71,7 @@ public class PlexusLoggingTest
         }
     }
 
-    @Override
+    @BeforeEach
     protected void setUp()
     {
         Guice.createInjector( new AbstractModule()
@@ -99,6 +101,7 @@ public class PlexusLoggingTest
     @Inject
     SomeComponent component;
 
+    @Test
     public void testLogging()
     {
         assertNotNull( component.logger );
