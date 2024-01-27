@@ -14,12 +14,18 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.codehaus.plexus.component.annotations.Requirement;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HintsTest
-    extends TestCase
 {
+    @Test
     public void testCanonicalHint()
     {
         assertEquals( "default", Hints.canonicalHint( null ) );
@@ -28,6 +34,7 @@ public class HintsTest
         assertEquals( "foo", Hints.canonicalHint( "foo" ) );
     }
 
+    @Test
     public void testCanonicalHints()
     {
         assertArrayEquals( new String[0], Hints.canonicalHints() );
@@ -39,6 +46,7 @@ public class HintsTest
         assertArrayEquals( new String[] { "foo", "default" }, Hints.canonicalHints( requirement( "foo", "" ) ) );
     }
 
+    @Test
     public void testCanonicalHintList()
     {
         assertEquals( Collections.emptyList(), Hints.canonicalHints( Arrays.<String> asList() ) );
@@ -49,6 +57,7 @@ public class HintsTest
         assertEquals( Arrays.asList( "foo", "default" ), Hints.canonicalHints( Arrays.asList( "foo", "" ) ) );
     }
 
+    @Test
     public void testHintsAreInterned()
     {
         assertSame( "hint", Hints.canonicalHint( new String( "hint" ) ) );
@@ -60,17 +69,13 @@ public class HintsTest
         assertEquals( new String( "hint" ), Hints.canonicalHint( "hint" ) );
     }
 
+    @Test
     public void testIsDefaultHint()
     {
         assertTrue( Hints.isDefaultHint( null ) );
         assertTrue( Hints.isDefaultHint( "" ) );
         assertTrue( Hints.isDefaultHint( new String( "default" ) ) );
         assertFalse( Hints.isDefaultHint( "foo" ) );
-    }
-
-    private static <T> void assertArrayEquals( final T[] a, final T[] b )
-    {
-        assertTrue( "Expected: " + Arrays.toString( a ) + "but was: " + Arrays.toString( b ), Arrays.equals( a, b ) );
     }
 
     @SuppressWarnings( "deprecation" )

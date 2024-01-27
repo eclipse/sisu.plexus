@@ -20,6 +20,9 @@ import org.eclipse.sisu.bean.BeanProperty;
 import org.eclipse.sisu.bean.PropertyBinding;
 import org.eclipse.sisu.inject.DeferredClass;
 import org.eclipse.sisu.space.URLClassSpace;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
@@ -28,10 +31,10 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class PlexusBeanMetadataTest
-    extends TestCase
 {
     @Inject
     @Named( "2" )
@@ -40,7 +43,7 @@ public class PlexusBeanMetadataTest
     @Inject
     Injector injector;
 
-    @Override
+    @BeforeEach
     protected void setUp()
     {
         Guice.createInjector( new AbstractModule()
@@ -223,6 +226,7 @@ public class PlexusBeanMetadataTest
         }
     }
 
+    @Test
     public void testExtraMetadata()
     {
         assertEquals( "REQUIREMENT", bean.getExtraMetadata() );
@@ -232,6 +236,6 @@ public class PlexusBeanMetadataTest
 
     static DeferredClass<?> defer( final Class<?> clazz )
     {
-        return new URLClassSpace( TestCase.class.getClassLoader() ).deferLoadClass( clazz.getName() );
+        return new URLClassSpace( Assertions.class.getClassLoader() ).deferLoadClass( clazz.getName() );
     }
 }

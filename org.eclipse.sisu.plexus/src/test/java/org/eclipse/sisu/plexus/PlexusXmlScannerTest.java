@@ -32,13 +32,18 @@ import org.eclipse.sisu.space.URLClassSpace;
 import org.eclipse.sisu.space.asm.ClassWriter;
 import org.eclipse.sisu.space.asm.MethodVisitor;
 import org.eclipse.sisu.space.asm.Opcodes;
+import org.junit.jupiter.api.Test;
 
 import com.google.inject.TypeLiteral;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class PlexusXmlScannerTest
-    extends TestCase
 {
     static class NamedProperty
         implements BeanProperty<Object>
@@ -135,6 +140,7 @@ public class PlexusXmlScannerTest
         }
     }
 
+    @Test
     public void testLoadOnStart()
     {
         final URL plexusXml = getClass().getResource( "/META-INF/plexus/plexus.xml" );
@@ -153,6 +159,7 @@ public class PlexusXmlScannerTest
         assertEquals( DebugBean.class, componentMap.get( component2 ).load() );
     }
 
+    @Test
     public void testBadPlexusXml()
     {
         final ClassSpace space = new URLClassSpace( PlexusXmlScannerTest.class.getClassLoader() );
@@ -161,6 +168,7 @@ public class PlexusXmlScannerTest
     }
 
     @SuppressWarnings( "deprecation" )
+    @Test
     public void testComponents()
     {
         final ClassSpace space = new URLClassSpace( PlexusXmlScannerTest.class.getClassLoader() );
@@ -298,6 +306,7 @@ public class PlexusXmlScannerTest
         }
     }
 
+    @Test
     public void testBadComponentsXml()
     {
         ClassSpace space;
@@ -331,6 +340,7 @@ public class PlexusXmlScannerTest
         assertTrue( scanner.scan( space, true ).isEmpty() );
     }
 
+    @Test
     public void testInterpolatedComponentsXml()
     {
         final ClassSpace space = new FixedClassSpace( "/META-INF/plexus/variable_components.xml" );
@@ -350,6 +360,7 @@ public class PlexusXmlScannerTest
                       metadata.get( DefaultBean.class.getName() ).getConfiguration( new NamedProperty( "variable" ) ).value() );
     }
 
+    @Test
     public void testLocalizedXmlScanning()
     {
         final ClassSpace space = new URLClassSpace( PlexusXmlScannerTest.class.getClassLoader(), null );
@@ -358,6 +369,7 @@ public class PlexusXmlScannerTest
         assertTrue( new PlexusXmlScanner( null, null, null ).scan( space, false ).isEmpty() );
     }
 
+    @Test
     public void testOptionalLogging()
         throws Exception
     {

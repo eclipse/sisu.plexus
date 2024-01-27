@@ -19,11 +19,14 @@ import org.codehaus.plexus.component.annotations.Configuration;
 import org.codehaus.plexus.component.annotations.Requirement;
 import org.eclipse.sisu.bean.BeanProperties;
 import org.eclipse.sisu.bean.BeanProperty;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlexusAnnotatedBeanMetadataTest
-    extends TestCase
 {
     @Component( role = Bean.class )
     protected static class Bean
@@ -43,6 +46,7 @@ public class PlexusAnnotatedBeanMetadataTest
     }
 
     @SuppressWarnings( "deprecation" )
+    @Test
     public void testRawAnnotations()
     {
         final PlexusBeanMetadata metadata = new PlexusAnnotatedMetadata( null );
@@ -66,6 +70,7 @@ public class PlexusAnnotatedBeanMetadataTest
     }
 
     @SuppressWarnings( "deprecation" )
+    @Test
     public void testInterpolatedAnnotations()
     {
         final Map<?, ?> variables = Collections.singletonMap( "some.value", "INTERPOLATED" );

@@ -14,11 +14,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import org.codehaus.plexus.component.annotations.Configuration;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ConfigurationAnnotationTest
-    extends TestCase
 {
     @Configuration( "Default" )
     String defaultConfig;
@@ -29,6 +31,7 @@ public class ConfigurationAnnotationTest
     @Configuration( "${property}" )
     String propertyConfig;
 
+    @Test
     public void testConfigurationImpl()
         throws NoSuchFieldException
     {
@@ -36,8 +39,8 @@ public class ConfigurationAnnotationTest
         checkBehaviour( "namedConfig" );
         checkBehaviour( "propertyConfig" );
 
-        assertFalse( replicate( getConfiguration( "defaultConfig" ) ).equals( getConfiguration( "namedConfig" ) ) );
-        assertFalse( replicate( getConfiguration( "defaultConfig" ) ).equals( getConfiguration( "propertyConfig" ) ) );
+        assertNotEquals( replicate( getConfiguration( "defaultConfig" ) ), getConfiguration( "namedConfig" ) );
+        assertNotEquals( replicate( getConfiguration( "defaultConfig" ) ), getConfiguration( "propertyConfig" ) );
     }
 
     private static void checkBehaviour( final String name )
@@ -46,10 +49,10 @@ public class ConfigurationAnnotationTest
         final Configuration orig = getConfiguration( name );
         final Configuration clone = replicate( orig );
 
-        assertTrue( orig.equals( clone ) );
-        assertTrue( clone.equals( orig ) );
-        assertTrue( clone.equals( clone ) );
-        assertFalse( clone.equals( "" ) );
+        assertEquals( orig, clone );
+        assertEquals( clone, orig );
+        assertEquals( clone, clone );
+        assertNotEquals( "", clone );
 
         assertEquals( orig.hashCode(), clone.hashCode() );
 
@@ -74,6 +77,7 @@ public class ConfigurationAnnotationTest
         return new ConfigurationImpl( orig.name(), orig.value() );
     }
 
+    @Test
     public void testNullChecks()
     {
         checkNullNotAllowed( null, "" );

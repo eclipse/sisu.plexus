@@ -17,12 +17,14 @@ import org.codehaus.plexus.component.configurator.BasicComponentConfigurator;
 import org.codehaus.plexus.component.configurator.ComponentConfigurationException;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DefaultValuesTest
-    extends TestCase
 {
+    @Test
     public void testDefaultBasicValue()
         throws ComponentConfigurationException
     {
@@ -42,6 +44,7 @@ public class DefaultValuesTest
         assertEquals( "OVERRIDE", componentWithString.target );
     }
 
+    @Test
     public void testDefaultCollection()
         throws ComponentConfigurationException
     {
@@ -54,7 +57,7 @@ public class DefaultValuesTest
         config.addChild( target );
 
         new BasicComponentConfigurator().configureComponent( componentWithArray, config, null );
-        assertTrue( Arrays.equals( new String[] { "one", "two", "three" }, componentWithArray.target ) );
+        assertArrayEquals( new String[] { "one", "two", "three" }, componentWithArray.target );
 
         new BasicComponentConfigurator().configureComponent( componentWithList, config, null );
         assertEquals( Arrays.asList( "one", "two", "three" ), componentWithList.target );
@@ -64,7 +67,7 @@ public class DefaultValuesTest
         target.addChild( element );
 
         new BasicComponentConfigurator().configureComponent( componentWithArray, config, null );
-        assertTrue( Arrays.equals( new String[] { "OVERRIDE" }, componentWithArray.target ) );
+        assertArrayEquals( new String[] { "OVERRIDE" }, componentWithArray.target );
 
         new BasicComponentConfigurator().configureComponent( componentWithList, config, null );
         assertEquals( Arrays.asList( "OVERRIDE" ), componentWithList.target );

@@ -24,14 +24,13 @@ import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
-
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ParameterizedCollectionTest
-    extends TestCase
 {
     static class MapHolder
     {
@@ -48,6 +47,7 @@ public class ParameterizedCollectionTest
         Map<String, Map<String, List<Boolean>>>[] array;
     }
 
+    @Test
     public void testParameterizedMap()
         throws Exception
     {
@@ -64,6 +64,7 @@ public class ParameterizedCollectionTest
         assertEquals( expectedMap, mapHolder.map );
     }
 
+    @Test
     public void testParameterizedList()
         throws Exception
     {
@@ -80,6 +81,7 @@ public class ParameterizedCollectionTest
         assertEquals( expectedList, listHolder.list );
     }
 
+    @Test
     public void testParameterizedArray()
         throws Exception
     {

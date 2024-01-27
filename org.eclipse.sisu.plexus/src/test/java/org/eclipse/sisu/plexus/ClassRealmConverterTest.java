@@ -13,12 +13,13 @@ package org.eclipse.sisu.plexus;
 import org.codehaus.plexus.classworlds.ClassWorld;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
 import org.codehaus.plexus.component.configurator.converters.special.ClassRealmConverter;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ClassRealmConverterTest
-    extends TestCase
 {
+    @Test
     public void testClassRealmStack()
         throws Exception
     {

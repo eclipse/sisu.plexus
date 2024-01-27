@@ -17,15 +17,20 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.google.inject.AbstractModule;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import com.google.inject.Guice;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ArrayConstantTest
-    extends TestCase
 {
-    @Override
+    @BeforeEach
     protected void setUp()
         throws Exception
     {
@@ -82,28 +87,33 @@ public class ArrayConstantTest
     @Named( "Multi" )
     double[][] multi2;
 
+    @Test
     public void testEmptyArray()
     {
         assertEquals( 0, empty.length );
     }
 
     @SuppressWarnings( "boxing" )
+    @Test
     public void testCustomArray()
     {
-        assertTrue( Arrays.equals( new Object[] { true, URI.create( "file:temp" ), 8.1f }, custom ) );
+        assertArrayEquals( new Object[] { true, URI.create( "file:temp" ), 8.1f }, custom );
     }
 
+    @Test
     public void testStringArray()
     {
-        assertTrue( Arrays.equals( new String[] { "1", "2", "3" }, text ) );
+        assertArrayEquals( new String[] { "1", "2", "3" }, text );
     }
 
+    @Test
     public void testPrimitiveArray()
     {
-        assertTrue( Arrays.equals( new int[] { 4, 5, 6 }, numbers ) );
+        assertArrayEquals( new int[] { 4, 5, 6 }, numbers );
     }
 
     @SuppressWarnings( "boxing" )
+    @Test
     public void testMultiArrays()
     {
         assertTrue( Arrays.deepEquals( new Integer[][] { { 1, 2 }, { 3, 4 }, { 5, 6 } }, multi1 ) );

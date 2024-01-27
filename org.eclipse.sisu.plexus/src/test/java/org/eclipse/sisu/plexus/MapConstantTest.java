@@ -20,15 +20,19 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.google.inject.AbstractModule;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import com.google.inject.Guice;
 import com.google.inject.name.Names;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MapConstantTest
-    extends TestCase
 {
-    @Override
+    @BeforeEach
     protected void setUp()
         throws Exception
     {
@@ -76,11 +80,13 @@ public class MapConstantTest
     @Named( "Properties" )
     Properties properties;
 
+    @Test
     public void testEmptyMap()
     {
         assertTrue( empty.isEmpty() );
     }
 
+    @Test
     public void testCustomMap()
     {
         assertEquals( LinkedHashMap.class, custom.getClass() );
@@ -89,6 +95,7 @@ public class MapConstantTest
         assertEquals( new File( "TEST" ), custom.get( "file" ) );
     }
 
+    @Test
     public void testMapAndProperties()
     {
         final HashMap<String, String> testMap = new HashMap<String, String>();
